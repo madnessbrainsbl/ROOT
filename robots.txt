@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://madnessbrainsbl.github.io/ROOT/sitemap.xml

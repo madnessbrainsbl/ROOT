@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>RØOT — автономный полигон AppSec</title>
+  <meta name="description" content="Практикуйте OWASP Web и API Security, CTF-задачи и исследование CVE локально, без облачного аккаунта.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://madnessbrainsbl.github.io/ROOT/ru/">
+  <link rel="alternate" hreflang="en" href="https://madnessbrainsbl.github.io/ROOT/">
+  <link rel="alternate" hreflang="ru" href="https://madnessbrainsbl.github.io/ROOT/ru/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="RØOT — автономный полигон AppSec">
+  <meta property="og:description" content="OWASP-лаборатории, CTF-задачи и открытый офлайн-каталог CVE в одном self-hosted приложении.">
+  <meta property="og:url" content="https://madnessbrainsbl.github.io/ROOT/ru/">
+  <meta property="og:image" content="https://madnessbrainsbl.github.io/ROOT/cover.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../source/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/landing.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="Главная RØOT">RØOT</a>
+    <nav aria-label="Основная навигация">
+      <a href="#features">Возможности</a>
+      <a href="#start">Запуск</a>
+      <a href="../README.ru.md">Документация</a>
+      <a class="language" href="../" lang="en">EN</a>
+    </nav>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="hero-shade"></div>
+      <div class="hero-content">
+        <p class="eyebrow">OPEN SOURCE · OFFLINE FIRST · SELF-HOSTED</p>
+        <h1>Ломай безопасно.<br>Исправляй правильно.</h1>
+        <p class="lead">Локальный AppSec-полигон, который объединяет теорию OWASP, браузерные симуляции, исправление кода, тесты и исследование открытых данных CVE.</p>
+        <div class="actions">
+          <a class="button primary" href="../app/#/lab/A01">Открыть приложение</a>
+          <a class="button" href="https://github.com/madnessbrainsbl/ROOT">Открыть GitHub</a>
+        </div>
+        <ul class="proof" aria-label="Состав платформы">
+          <li><strong>30</strong><span>Web CTF-задач</span></li>
+          <li><strong>10</strong><span>API-лабораторий</span></li>
+          <li><strong>500</strong><span>вопросов RU/EN</span></li>
+          <li><strong>250</strong><span>открытых KEV-записей</span></li>
+        </ul>
+      </div>
+    </section>
+    <section class="section intro" id="features">
+      <p class="eyebrow">ЕДИНЫЙ ЛОКАЛЬНЫЙ ПРОЦЕСС</p>
+      <h2>От понимания уязвимости до проверенного исправления</h2>
+      <p class="section-lead">RØOT не является живой уязвимой целью и не отправляет вашу работу во внешний сервис. Безопасные симуляции помогают понять причины типичных ошибок защиты приложений.</p>
+      <div class="feature-grid">
+        <article><span>01</span><h3>Изучай</h3><p>Двуязычные материалы по OWASP Web, API и LLM Security с CWE и практическим контекстом.</p></article>
+        <article><span>02</span><h3>Эксплуатируй</h3><p>Безопасные браузерные симуляции, флаги и последовательные подсказки.</p></article>
+        <article><span>03</span><h3>Исправляй</h3><p>Сравнение уязвимого и защищённого кода с последующей проверкой знаний.</p></article>
+        <article><span>04</span><h3>Исследуй</h3><p>Воспроизводимый офлайн-снимок данных из CISA KEV и CVE List V5.</p></article>
+      </div>
+    </section>
+    <section class="section showcase">
+      <div class="copy">
+        <p class="eyebrow">СОЗДАНО ДЛЯ ПРАКТИКИ</p>
+        <h2>Без подписки, облачной лаборатории и живой цели</h2>
+        <p>Запускайте RØOT через Python или Docker, сохраняйте прогресс в браузере и используйте платформу в изолированном классе, домашней лаборатории или закрытой AppSec-среде.</p>
+        <ul class="check-list">
+          <li>Учебные треки OWASP Web и API</li>
+          <li>Payload-библиотека и каталог цепочек атак</li>
+          <li>Сборщики команд и шаблоны отчётов</li>
+          <li>Read-only SQLite API для CVE</li>
+        </ul>
+      </div>
+      <img src="../image/owasp-lab.jpg" alt="Лаборатория RØOT с теорией, практикой, исправлением и тестом" loading="lazy">
+    </section>
+    <section class="section screenshots" aria-labelledby="screenshots-title">
+      <p class="eyebrow">РАБОЧАЯ СРЕДА</p>
+      <h2 id="screenshots-title">Знания по безопасности, которые можно применять</h2>
+      <div class="shot-grid">
+        <figure><img src="../image/cve-catalog.jpg" alt="Локальный каталог CVE RØOT" loading="lazy"><figcaption>Поиск по открытому CVE-снимку: severity, вендор, продукт и идентификатор.</figcaption></figure>
+        <figure><img src="../image/tools.jpg" alt="Каталог security-инструментов RØOT" loading="lazy"><figcaption>Инструменты, payloads, команды, цепочки атак и рабочие шаблоны.</figcaption></figure>
+      </div>
+    </section>
+    <section class="section start" id="start">
+      <div><p class="eyebrow">ЛОКАЛЬНЫЙ ЗАПУСК</p><h2>Одна команда до старта</h2><p>Достаточно Python 3.10+. Встроенные материалы и CVE-снимок не требуют внешних токенов.</p></div>
+      <div class="commands"><pre><code>git clone https://github.com/madnessbrainsbl/ROOT.git
+cd ROOT
+python serve.py</code></pre><pre><code>docker compose up --build</code></pre></div>
+    </section>
+    <section class="final-cta">
+      <p class="eyebrow">RØOT v0.1.0</p><h2>Меньше пассивного чтения.</h2>
+      <p>Откройте полигон, пройдите одну лабораторию и сообщите, что оказалось непонятным.</p>
+      <div class="actions"><a class="button primary" href="../app/">Начать с A01</a><a class="button" href="https://github.com/madnessbrainsbl/ROOT/issues">Оставить отзыв</a></div>
+    </section>
+  </main>
+  <footer><span>RØOT · Apache-2.0</span><span>Только для обучения и авторизованного тестирования.</span></footer>
+</body>
+</html>

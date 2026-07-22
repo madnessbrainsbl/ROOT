@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Public Offline CVE and CISA KEV Catalog — RØOT</title>
+  <meta name="description" content="Search a reproducible local CVE snapshot built from CISA KEV and CVE List V5 through a read-only SQLite API.">
+  <link rel="canonical" href="https://madnessbrainsbl.github.io/ROOT/offline-cve/">
+  <meta property="og:title" content="Public Offline CVE Catalog — RØOT"><meta property="og:description" content="A small reproducible security research snapshot with explicit provenance."><meta property="og:image" content="https://madnessbrainsbl.github.io/ROOT/cover.jpg"><meta property="og:type" content="article">
+  <link rel="icon" href="../source/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../css/landing.css">
+</head>
+<body>
+  <header class="site-header"><a class="brand" href="../">RØOT</a><nav aria-label="Primary navigation"><a href="../owasp-labs/">OWASP labs</a><a href="../education/">Education</a><a href="../README.md">Docs</a><a class="language" href="../app/#/cves">Open catalog</a></nav></header>
+  <main>
+    <header class="article-hero"><p class="eyebrow">LOCAL CVE RESEARCH</p><h1>A smaller catalog you can verify</h1><p class="lead">RØOT ships a compact public snapshot instead of claiming access to a proprietary or complete vulnerability archive.</p><div class="actions"><a class="button primary" href="../app/#/cves">Search the catalog</a><a class="button" href="https://github.com/madnessbrainsbl/ROOT/blob/main/data/cves_public.provenance.json">View provenance</a></div></header>
+    <article class="article-body">
+      <h2>What is bundled</h2>
+      <p>The v0.1.0 repository includes 250 recently added entries from the CISA Known Exploited Vulnerabilities catalog. Records are enriched from the public CVE List V5 when a published CNA record is available. The result is deliberately small enough to review, clone, and use offline.</p>
+      <p>The catalog is not a live threat-intelligence feed, a complete CVE mirror, or a replacement for vendor advisories. It is a reproducible learning and research dataset that supports filters, pagination, individual records, and an in-browser SQL workflow.</p>
+      <h2>Traceable generation</h2>
+      <p>The standard-library generator in <code>scripts/build_cve_seed.py</code> fetches the official CISA KEV data and matching CVE List V5 records, normalises the fields used by RØOT, and writes the JSON seed. A separate provenance document records the generation time, source URLs, record count, and SHA-256 digest.</p>
+      <pre><code>python scripts/build_cve_seed.py --limit 250
+python serve.py</code></pre>
+      <p>Generation is a maintainer action. The application never downloads vulnerability data on startup, accepts no API token, and exposes no update endpoint.</p>
+      <h2>Read-only API</h2>
+      <pre><code>GET /api/cves/status
+GET /api/cves?severity=CRITICAL&amp;q=apache&amp;limit=50&amp;offset=0
+GET /api/cves/counts
+GET /api/cves/CVE-2025-0001</code></pre>
+      <p>Query values are parameterized before reaching SQLite. Pagination, severity values, search length, and CVE identifiers are validated at the HTTP boundary. POST requests under <code>/api/</code> are rejected.</p>
+      <div class="note"><strong>Operational rule:</strong> confirm important vulnerability details against the CVE record, CISA entry, and vendor advisory before making a security decision.</div>
+      <h2>Static and self-hosted modes</h2>
+      <p>On the self-hosted Python server, the JSON seed is imported into SQLite and queried through the REST API. On GitHub Pages, the browser falls back to the same tracked JSON seed and performs filtering locally. Both paths use the same public source data.</p>
+    </article>
+  </main>
+  <footer><span>RØOT · Apache-2.0</span><span>Public sources, explicit provenance.</span></footer>
+</body>
+</html>

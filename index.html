@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>RØOT — Offline AppSec Training Range</title>
+  <meta name="description" content="Practice OWASP Web and API security, browser CTF challenges, and CVE research locally. No cloud account required.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://madnessbrainsbl.github.io/ROOT/">
+  <link rel="alternate" hreflang="en" href="https://madnessbrainsbl.github.io/ROOT/">
+  <link rel="alternate" hreflang="ru" href="https://madnessbrainsbl.github.io/ROOT/ru/">
+  <link rel="alternate" hreflang="x-default" href="https://madnessbrainsbl.github.io/ROOT/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="RØOT — Offline AppSec Training Range">
+  <meta property="og:description" content="OWASP labs, CTF challenges, and a public offline CVE catalog in one self-hosted application.">
+  <meta property="og:url" content="https://madnessbrainsbl.github.io/ROOT/">
+  <meta property="og:image" content="https://madnessbrainsbl.github.io/ROOT/cover.jpg">
+  <meta property="og:image:width" content="1774">
+  <meta property="og:image:height" content="887">
+  <meta property="og:image:alt" content="RØOT cybersecurity platform cover">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="RØOT — Offline AppSec Training Range">
+  <meta name="twitter:description" content="Practice application security locally without a cloud account.">
+  <meta name="twitter:image" content="https://madnessbrainsbl.github.io/ROOT/cover.jpg">
+  <link rel="icon" href="source/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/landing.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"RØOT","applicationCategory":"SecurityApplication","operatingSystem":"Windows, macOS, Linux","softwareVersion":"0.1.0","url":"https://madnessbrainsbl.github.io/ROOT/","downloadUrl":"https://github.com/madnessbrainsbl/ROOT","license":"https://www.apache.org/licenses/LICENSE-2.0","description":"Offline application-security training range for OWASP practice, CTF challenges, and CVE research."}</script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="RØOT home">RØOT</a>
+    <nav aria-label="Primary navigation">
+      <a href="#features">Features</a>
+      <a href="#start">Quick start</a>
+      <a href="README.md">Docs</a>
+      <a class="language" href="ru/" lang="ru">RU</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-shade"></div>
+      <div class="hero-content">
+        <p class="eyebrow">OPEN SOURCE · OFFLINE FIRST · SELF-HOSTED</p>
+        <h1>Break it safely.<br>Fix it properly.</h1>
+        <p class="lead">A local application-security range that connects OWASP theory, browser-based exploitation, remediation, quizzes, and public CVE research.</p>
+        <div class="actions">
+          <a class="button primary" href="app/#/lab/A01">Open the app</a>
+          <a class="button" href="https://github.com/madnessbrainsbl/ROOT">View on GitHub</a>
+        </div>
+        <ul class="proof" aria-label="Included content">
+          <li><strong>30</strong><span>Web CTF challenges</span></li>
+          <li><strong>10</strong><span>API mini-labs</span></li>
+          <li><strong>500</strong><span>bilingual questions</span></li>
+          <li><strong>250</strong><span>public KEV records</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section intro" id="features">
+      <p class="eyebrow">ONE LOCAL WORKFLOW</p>
+      <h2>From weakness to verified remediation</h2>
+      <p class="section-lead">RØOT is not a live vulnerable target and does not send your work to a third-party service. Its simulations teach the reasoning behind common application-security failures in a controlled browser environment.</p>
+      <div class="feature-grid">
+        <article><span>01</span><h3>Learn</h3><p>Read bilingual OWASP Web, API, and LLM security material with CWE mappings and practical context.</p></article>
+        <article><span>02</span><h3>Exploit</h3><p>Work through safe client-side simulations, capture flags, and use progressive hints when you are stuck.</p></article>
+        <article><span>03</span><h3>Fix</h3><p>Compare vulnerable and remediated code, then verify the lesson with a structured quiz.</p></article>
+        <article><span>04</span><h3>Investigate</h3><p>Search a reproducible offline snapshot derived from CISA KEV and CVE List V5.</p></article>
+      </div>
+    </section>
+
+    <section class="section showcase">
+      <div class="copy">
+        <p class="eyebrow">BUILT FOR PRACTICE</p>
+        <h2>No subscription. No cloud lab. No live target.</h2>
+        <p>Run RØOT with Python or Docker, keep progress in your browser, and use it in disconnected classrooms, homelabs, or private AppSec environments.</p>
+        <ul class="check-list">
+          <li>OWASP Web and API learning tracks</li>
+          <li>Payload library and attack-chain catalog</li>
+          <li>Command builders and report templates</li>
+          <li>Read-only SQLite CVE API</li>
+        </ul>
+      </div>
+      <img src="image/owasp-lab.jpg" alt="RØOT OWASP lab showing theory, practice, remediation, and quiz tabs" loading="lazy">
+    </section>
+
+    <section class="section screenshots" aria-labelledby="screenshots-title">
+      <p class="eyebrow">THE WORKSPACE</p>
+      <h2 id="screenshots-title">Security knowledge you can act on</h2>
+      <div class="shot-grid">
+        <figure><img src="image/cve-catalog.jpg" alt="Searchable RØOT CVE catalog" loading="lazy"><figcaption>Filter the bundled public CVE snapshot by severity, vendor, product, or ID.</figcaption></figure>
+        <figure><img src="image/tools.jpg" alt="RØOT security tools catalog" loading="lazy"><figcaption>Move from reference material to tools, payloads, commands, and reporting workflows.</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="section start" id="start">
+      <div>
+        <p class="eyebrow">RUN LOCALLY</p>
+        <h2>One command away</h2>
+        <p>Python 3.10+ is enough. The bundled content and CVE seed work without external credentials.</p>
+      </div>
+      <div class="commands">
+        <pre><code>git clone https://github.com/madnessbrainsbl/ROOT.git
+cd ROOT
+python serve.py</code></pre>
+        <pre><code>docker compose up --build</code></pre>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <p class="eyebrow">RØOT v0.1.0</p>
+      <h2>Learn less passively.</h2>
+      <p>Open the range, complete one lab, and tell us where the experience breaks.</p>
+      <div class="actions">
+        <a class="button primary" href="app/">Start with A01</a>
+        <a class="button" href="https://github.com/madnessbrainsbl/ROOT/issues">Send feedback</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>RØOT · Apache-2.0</span>
+    <span>For education and authorized security testing only.</span>
+  </footer>
+</body>
+</html>
