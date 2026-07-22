@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="../">
+<meta name="robots" content="noindex,follow">
+<meta name="description" content="RØOT application-security practice workspace: OWASP labs, CTF challenges, public KEV catalog, tools, and reporting workflows.">
+<title>RØOT App — OWASP · CTF · CVE</title>
+<link rel="icon" href="source/favicon.ico" sizes="any">
+<link rel="icon" href="source/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<header id="hdr">
+  <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Menu" aria-expanded="false">☰</button>
+  <a class="logo-img" href="app/#/lab/A01" title="RØOT">
+    <span class="logo-word">RØOT</span>
+  </a>
+  <div class="actions">
+    <div class="lang-switch" role="group" aria-label="Language">
+      <button type="button" class="lang-opt" id="lang-ru" data-lang="ru">RU</button>
+      <button type="button" class="lang-opt" id="lang-en" data-lang="en">EN</button>
+    </div>
+  </div>
+</header>
+
+<nav id="sidebar">
+  <div class="nsec">OWASP</div>
+  <!-- Web / API / LLM Top 10 expandable groups (built in refreshNav) -->
+  <div id="navlist"></div>
+
+  <div class="nsep"></div>
+  <div class="nsec">Zero-Day / KEV</div>
+  <div class="ni" data-nav="zerodays" data-route="zerodays" role="button" tabindex="0">
+    <span class="icon ic-bolt"></span><span class="nn" data-i18n="zeroDays">Zero-Days</span>
+  </div>
+
+  <div class="nsep"></div>
+  <div class="nsec" data-i18n="toolkit">Resources</div>
+  <div class="ni" data-nav="tools" data-route="tools" role="button" tabindex="0">
+    <span class="icon ic-bolt"></span><span class="nn" data-i18n="toolsNav">Tools</span>
+  </div>
+  <div class="ni" data-nav="commands" data-route="commands" role="button" tabindex="0">
+    <span class="icon ic-bolt"></span><span class="nn" data-i18n="cmdsNav">Commands</span>
+  </div>
+  <div class="ni" data-nav="reports" data-route="reports" role="button" tabindex="0">
+    <span class="icon ic-doc"></span><span class="nn" data-i18n="reports">Report templates</span>
+  </div>
+</nav>
+
+<main id="main">
+  <div class="root-spin-wrap"><div class="root-spinner"></div></div>
+</main>
+
+<!-- SQL terminal (RØOT knowledge DB + Attack DB) -->
+<div id="term" aria-label="SQL terminal">
+  <div class="tbar">
+    <span class="ttl" id="term-title">SQL terminal</span>
+    <button type="button" class="ttab active" id="tab-main" data-sql-db="main">📚 RØOT DB</button>
+    <button type="button" class="ttab" id="tab-atk" data-sql-db="attack">🔴 Attack DB</button>
+    <button type="button" class="btn term-close" id="term-close" title="Close">✕</button>
+  </div>
+  <div id="tbody">
+    <div id="tincol">
+      <textarea id="tsql" spellcheck="false" placeholder="SELECT …  (Ctrl+Enter)"></textarea>
+      <div id="tact">
+        <span id="tmlbl">RØOT DB</span>
+        <button type="button" class="btn" data-sql-action="history-next">↑</button>
+        <button type="button" class="btn" data-sql-action="history-previous">↓</button>
+        <button type="button" class="btn" data-sql-action="clear">Clear</button>
+        <button type="button" class="btn btnp" data-sql-action="run">Run ▶</button>
+      </div>
+    </div>
+    <div id="tout"><span style="color:var(--mut)">// query results</span></div>
+    <div id="schema">
+      <div class="stitle">Tables</div>
+      <div id="slist"></div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script defer src="js/sql-wasm.js"></script>
+<script defer src="js/state.js"></script>
+<script defer src="js/i18n.js"></script>
+<script defer src="js/data.js"></script>
+<script defer src="js/data-labs.js"></script>
+<script defer src="js/data-payloads.js"></script>
+<script defer src="js/data-chains.js"></script>
+<script defer src="js/data-workflows.js"></script>
+<script defer src="js/challenges.js"></script>
+<script defer src="js/zerodays-data.js"></script>
+<script defer src="js/tools-catalog.js"></script>
+<script defer src="js/theory.js"></script>
+<script defer src="js/theory-2025.js"></script>
+<script defer src="js/labs.js"></script>
+<script defer src="js/sql-lab.js"></script>
+<script defer src="js/zerodays.js"></script>
+<script defer src="js/cve-db.js"></script>
+<script defer src="js/cves-cvss9.js"></script>
+<script defer src="js/api-top10.js"></script>
+<script defer src="js/llm-top10.js"></script>
+<script defer src="js/tools.js"></script>
+<script defer src="js/app.js"></script>
+</body>
+</html>
