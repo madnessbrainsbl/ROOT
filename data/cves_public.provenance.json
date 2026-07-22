@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-22T04:55:02.102300+00:00",
+  "records": 250,
+  "sha256": "d45f01eb7889aa9ecaa05cd3db738aff8f1b0e462111e604da073cec9c3b512d",
+  "sources": [
+    {
+      "name": "CISA Known Exploited Vulnerabilities",
+      "url": "https://github.com/cisagov/kev-data"
+    },
+    {
+      "name": "CVE List V5",
+      "url": "https://github.com/CVEProject/cvelistV5"
+    }
+  ]
+}

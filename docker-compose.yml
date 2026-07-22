@@ -1,0 +1,10 @@
+services:
+  root:
+    build: .
+    image: root-range:0.1.0
+    ports:
+      - "8080:8080"
+    read_only: true
+    tmpfs:
+      - /tmp
+    restart: unless-stopped

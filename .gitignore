@@ -1,0 +1,72 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.code-workspace
+
+# Local agent / tooling
+.claude/
+.grok/
+.cursor/
+.agent/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+
+# Node (if added later)
+node_modules/
+npm-debug.log*
+yarn-error.log*
+test-results/
+playwright-report/
+
+# Backups / temp
+*.bak
+*.bak.*
+*.tmp
+*.temp
+*~
+*.orig
+*.rej
+
+# Local evidence / hunt logs (not product)
+evidence/
+*.log
+
+# Local secrets / keys
+*.pem
+*.key
+id_rsa*
+credentials.json
+secrets/
+update_cves.py
+
+# Optional local NVD cache
+.nvd_cache/
+*.sqlite
+*.sqlite3
+*.db
+
+# CVE data — generated public seed is the only tracked archive
+data/cves_*.json
+!data/cves_public.json
+!data/cves_public.provenance.json
+cves_full.json
+cves_cvss9.json
+
+# Browser / local dumps
+localStorage*
+sessionStorage*
