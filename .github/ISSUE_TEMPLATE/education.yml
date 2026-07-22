@@ -1,0 +1,31 @@
+name: Education pilot
+description: Propose a classroom or study-group pilot.
+title: "education: "
+labels: [education]
+body:
+  - type: input
+    id: audience
+    attributes:
+      label: Learner level and group size
+    validations:
+      required: true
+  - type: input
+    id: format
+    attributes:
+      label: Session format and duration
+      placeholder: 90-minute in-person workshop
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired learning outcome
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy
+      options:
+        - label: This request contains no student names or confidential data.
+          required: true
