@@ -19,7 +19,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - run: pip install -r requirements-dev.txt
-      - run: ruff check serve.py scripts tests
+      - run: python -m ruff check serve.py scripts tests
       - run: black --check serve.py scripts tests
       - run: python -m pytest -q
 
