@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Build bilingual OWASP Top 10:2025 quiz from RU + EN markdown sources.
 
 Output: js/data/labs.js quiz arrays with M(ru, en) for every field.

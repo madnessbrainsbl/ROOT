@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Append newly listed CISA KEV CVEs to the local Zero-Days catalog."""
 
 from __future__ import annotations

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Download CVE archive from ZeroDay Signal and rebuild local chunks."""
 
 from __future__ import annotations

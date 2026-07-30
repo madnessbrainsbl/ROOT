@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Build the bundled CVE seed from CISA KEV and CVE List V5."""
 
 from __future__ import annotations

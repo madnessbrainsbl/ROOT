@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Serve RØOT and its read-only SQLite CVE API."""
 
 from __future__ import annotations

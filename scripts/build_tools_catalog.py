@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Build the runtime tool catalog from synchronized English and Russian Markdown."""
 
 from __future__ import annotations
