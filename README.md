@@ -1,17 +1,16 @@
 <div align="center">
 
-![RØOT cover](source/cover.jpg)
+<img src="source/cover.jpg" alt="RØOT — offline AppSec training range" width="900">
 
 # RØOT
 
 ### Break it safely. Fix it properly.
 
-An offline-first application-security range for OWASP practice, browser CTF
-challenges, remediation work, and public CVE research.
+An offline-first AppSec workspace for OWASP practice, remediation, verification,
+and CVE prioritization.
 
 [**Live demo**](https://madnessbrainsbl.github.io/ROOT/) ·
-[**Open app**](https://madnessbrainsbl.github.io/ROOT/app/) ·
-[**Русская версия**](README.ru.md)
+[**Open app**](https://madnessbrainsbl.github.io/ROOT/app/)
 
 [![CI](https://github.com/madnessbrainsbl/ROOT/actions/workflows/ci.yml/badge.svg)](https://github.com/madnessbrainsbl/ROOT/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)
@@ -20,42 +19,28 @@ challenges, remediation work, and public CVE research.
 
 </div>
 
-## Stop reading about vulnerabilities. Start reasoning through them.
+[⚡ Quick start](#-quick-start) ·
+[🧭 Navigation guide](#-navigation-guide) ·
+[📊 Framework comparison](#-framework-comparison) ·
+[📦 Included content](#-included-content) ·
+[🛡️ Responsible use](#️-responsible-use) ·
+[🤝 Contributing](#-contributing)
+
+---
+
+## What is RØOT?
 
 RØOT turns a security topic into a repeatable workflow: understand the trust
-boundary, exploit a controlled browser simulation, compare vulnerable and
-remediated code, capture the flag, and verify the lesson with a quiz.
+boundary, reproduce the flaw in a controlled browser simulation, compare the
+remediation, and verify the lesson with a quiz. It runs locally with no SaaS
+account, API key, analytics service, or live target.
 
-The bundled application runs locally. It needs no SaaS account, API token,
-cloud lab, analytics service, or live target.
+Built for developers learning AppSec, teams validating controls, and educators
+running offline labs.
 
-| Included in v0.1.0 | Verified count |
-|---|---:|
-| Web CTF challenges | 30 |
-| OWASP API Security mini-labs | 10 |
-| Bilingual quiz questions | 500 |
-| Public CISA KEV/CVE List V5 records | 250 |
-| Security tool references | 420 |
-| Security standards and methods | 50 |
-| Payload examples in 66 categories | 1,224 |
-| Attack-chain scenarios | 114 |
-| Command builders | 59 |
+---
 
-![RØOT product tour](image/root-demo.gif)
-
-## What you can do
-
-- Study Web Top 10 material with CWE mappings and practical context.
-- Complete safe Web and API challenge simulations with hints and scoring.
-- Compare vulnerable implementations with focused remediation examples.
-- Search a local public CVE snapshot by ID, vendor, product, or severity.
-- Work with payload references, attack chains and command builders,
-  SQL queries, and report templates.
-- Keep progress and notes in the browser and export them as JSON.
-
-![OWASP theory, practice, remediation, and quiz](image/owasp-lab.jpg)
-
-## Quick start
+## ⚡ Quick start
 
 Requirements: Python 3.10+ and a modern browser.
 
@@ -65,8 +50,8 @@ cd ROOT
 python3 serve.py   # Windows: python serve.py
 ```
 
-Open <http://127.0.0.1:8080/> for the product page or
-<http://127.0.0.1:8080/app/> for the application.
+Open <http://127.0.0.1:8080/> for the landing page or
+<http://127.0.0.1:8080/app/> for the workspace.
 
 ### Docker
 
@@ -74,159 +59,106 @@ Open <http://127.0.0.1:8080/> for the product page or
 docker compose up --build
 ```
 
-The container exposes <http://127.0.0.1:8080> and stores its generated SQLite
-database in a temporary writable filesystem. No secret or external credential
-is required.
+The container needs no credentials and keeps its generated SQLite database in a
+temporary writable filesystem.
 
-## CVE data and offline behavior
+---
 
-RØOT bundles a deliberately small snapshot of 250 recently added CISA Known
-Exploited Vulnerabilities. Published CVE List V5 records provide CNA details
-where available.
+## 🧭 Navigation guide
 
-- Sources and SHA-256: [`data/cves_public.provenance.json`](data/cves_public.provenance.json)
-- Reproducible builder: [`scripts/build_cve_seed.py`](scripts/build_cve_seed.py)
-- Third-party notices and source terms: see below.
+I want to… | Open
+--- | ---
+Practice a web vulnerability | [OWASP Web Top 10](https://madnessbrainsbl.github.io/ROOT/app/#/owasp)
+Test an API risk | [OWASP API Security Top 10](https://madnessbrainsbl.github.io/ROOT/app/#/api)
+Turn a requirement into evidence | [ASVS](https://madnessbrainsbl.github.io/ROOT/app/#/asvs)
+Plan testing or threat modelling | [Security frameworks](https://madnessbrainsbl.github.io/ROOT/app/#/frameworks)
+Prioritize a public vulnerability | [Zero-Days / KEV](https://madnessbrainsbl.github.io/ROOT/app/#/cves)
+Find a security tool or command | [Tools](https://madnessbrainsbl.github.io/ROOT/app/#/tools) and [Commands](https://madnessbrainsbl.github.io/ROOT/app/#/commands)
+Document an authorized assessment | [Report templates](https://madnessbrainsbl.github.io/ROOT/app/#/reports)
 
-Maintainers can rebuild the snapshot explicitly:
+---
 
-```bash
-python scripts/build_cve_seed.py --limit 250
-```
+## 📊 Framework comparison
 
-The application never downloads data on startup and exposes no update or
-credential endpoint. On Python it queries SQLite; on GitHub Pages it falls back
-to the same tracked JSON seed.
+Choose the method by the question it answers:
 
-Local `python3 serve.py` automatically uses ignored `data/cves_NNN.json` chunks
-when present and caches their fingerprint in SQLite. The temporary SQLite build
-uses the system temp directory, avoiding shared-folder locking issues. Set
-`ROOT_CVE_MODE=public` to force the 250-record public seed; GitHub Pages and
-Docker use that public dataset by default.
+Framework | Best for | RØOT route
+--- | --- | ---
+OWASP Top 10 | Prioritizing common web risks | [Web Top 10](https://madnessbrainsbl.github.io/ROOT/app/#/owasp)
+OWASP API Security Top 10 | API authorization, authentication, and abuse cases | [API Top 10](https://madnessbrainsbl.github.io/ROOT/app/#/api)
+OWASP ASVS | Verifiable application-security requirements | [ASVS](https://madnessbrainsbl.github.io/ROOT/app/#/asvs)
+OWASP WSTG | A repeatable web-testing method | [WSTG](https://madnessbrainsbl.github.io/ROOT/app/#/frameworks/wstg)
+OWASP SAMM | AppSec-program maturity | [SAMM](https://madnessbrainsbl.github.io/ROOT/app/#/frameworks/samm)
+STRIDE / PASTA / LINDDUN | Threat modelling and abuse paths | [Threat modelling](https://madnessbrainsbl.github.io/ROOT/app/#/frameworks/threat-modeling)
+NIST SSDF / SLSA / SBOM | Secure delivery and supply chain | [Secure SDLC](https://madnessbrainsbl.github.io/ROOT/app/#/frameworks/sdlc)
+CVSS / EPSS / KEV / SSVC | Vulnerability prioritization | [Vulnerability lifecycle](https://madnessbrainsbl.github.io/ROOT/app/#/frameworks/vulnerability-lifecycle)
 
-![Searchable public CVE snapshot](image/cve-catalog.jpg)
+Quick decision guide:
+
+- Need to learn or demonstrate a flaw → start with Web or API Top 10.
+- Need an acceptance criterion → use ASVS.
+- Need a testing plan → use WSTG or the lifecycle map.
+- Need to decide what to fix first → combine KEV, EPSS, exploitability, and asset context.
+
+---
+
+## 📦 Included content
+
+| Content | Count |
+| --- | ---: |
+| Web CTF challenges | 30 |
+| OWASP API Security mini-labs | 10 |
+| Bilingual quiz questions | 500 |
+| Public CISA KEV records | 250 |
+| Security tool references | 420 |
+| Security standards and methods | 50 |
+| Payload examples in 66 categories | 1,224 |
+| Attack-chain scenarios | 114 |
+| Command builders | 59 |
+
+## Offline CVE data
+
+RØOT bundles a deliberately small public CISA KEV and CVE List V5 snapshot.
+It never downloads data at startup. The browser uses the tracked JSON seed;
+the Python server indexes it in SQLite.
+
+- Provenance and SHA-256: [`data/cves_public.provenance.json`](data/cves_public.provenance.json)
+- Rebuild the public seed: `python scripts/build_cve_seed.py --limit 250`
+- Set `ROOT_CVE_MODE=public` to force the tracked public dataset locally.
 
 ## Architecture
 
 ```text
-Browser (Vanilla JS)
-├── Unified OWASP workspace: Web / API / LLM / ASVS
-├── SDLC security frameworks: STRIDE / SSDF / SLSA / CWE / CVSS / CIS
-├── CTF simulations, quizzes, tools, payloads, and reports
-├── sql.js knowledge workspace + browser progress
-└── GET /api/cves → Python stdlib server → SQLite
+Browser (vanilla JavaScript)
+├── OWASP Web / API / LLM / ASVS workspace
+├── CTF simulations, quizzes, tools, payloads, chains, and reports
+├── sql.js knowledge workspace + local browser progress
+└── GET /api/cves → Python standard-library server → SQLite
 ```
 
-The runtime has no third-party Python package. Frontend content is split into
-domain files without a bundler or framework.
+The runtime uses no third-party Python package and no frontend framework.
 
-### Read-only API
+## 🛡️ Responsible use
 
-```text
-GET /api/health
-GET /api/cves/status
-GET /api/cves?severity=CRITICAL&q=apache&limit=50&offset=0
-GET /api/cves/counts
-GET /api/cves/{CVE-ID}
-```
+RØOT is for education and systems you own or are explicitly authorized to
+assess. Do not use its examples, payloads, simulations, or command references
+to access, disrupt, alter, or extract data from another system. The CVE snapshot
+is a study aid, not live threat intelligence; confirm material decisions against
+the primary vendor advisory and the referenced CVE or CISA entry.
 
-## Limits
-
-- RØOT is a controlled educational simulator, not a vulnerability scanner.
-- The CVE seed is not complete or live threat intelligence.
-- Browser progress is local to the current browser profile.
-- Important CVE decisions must be verified against primary vendor advisories.
-
-## Responsible use
-
-RØOT is for learning and for testing systems you own or are explicitly
-authorized to assess. Do not use its examples, payloads, simulations, or command
-references to access, disrupt, alter, or extract data from another system.
-Follow applicable law, contracts, program rules, and coordinated-disclosure
-requirements.
-
-The bundled CVE snapshot is a study aid, not live threat intelligence. Confirm
-important details against the referenced CVE record, CISA entry, and vendor
-advisory before making an operational decision.
-
-## Reporting a vulnerability
-
-Report a suspected RØOT vulnerability privately through GitHub's **Report a
-vulnerability** form when available. Otherwise, open an issue with a
-non-sensitive summary and request a private contact channel. Include the
-affected version, reproduction steps, impact, and a minimal proof of concept;
-never include credentials, personal data, or unauthorized target data.
-
-The bundled labs are intentionally vulnerable. Their behavior is not a security
-issue unless it escapes the local simulation boundary.
-
-## Contributing
+## 🤝 Contributing
 
 Keep changes focused, avoid new production dependencies without agreement, and
-include the smallest relevant test. Content contributions must cite their
-sources and licenses; do not submit proprietary material, secrets, live target
-data, paid training content, or payload collections without compatible
-attribution. Contributions are distributed under Apache-2.0.
+include the smallest relevant test. Content must cite compatible sources and
+licenses. Do not submit secrets, personal data, proprietary material, or live
+target data.
 
-## Release notes
+## License and notices
 
-**0.1.0, 2026-07-22:** added bilingual landing pages, shareable routes, public
-CISA KEV/CVE List V5 seed data, the read-only CVE API, Docker support, and
-release CI. Removed proprietary CVE synchronization, credential handling, and
-startup downloads.
-
-Apache-2.0 licensed without warranty. License texts are in [`licenses/`](licenses/).
-
-## Third-party notices
-
-RØOT is licensed under Apache-2.0. The following bundled material remains
-subject to its own license or source terms.
-
-| Component or data | License / terms | Use in RØOT |
-|---|---|---|
-| [sql.js](https://github.com/sql-js/sql.js) | MIT | `js/vendor/sql-wasm.js` and `js/vendor/sql-wasm.wasm` power the browser SQL workspace. The license is in `licenses/sql.js-LICENSE.txt`. |
-| [PayloadsAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings) | MIT | The payload reference library contains adapted examples. Attribution and the license are in `licenses/PayloadsAllTheThings-LICENSE.txt`. |
-| [OWASP ASVS 5.0.0](https://github.com/OWASP/ASVS/tree/v5.0.0) | CC BY-SA 4.0 | The ASVS overview uses official version, level, and chapter information. RØOT summaries are educational; official documents remain authoritative. |
-| Space Grotesk, JetBrains Mono, Orbitron, VT323 | SIL Open Font License 1.1 | Locally hosted web fonts. The license is in `licenses/fonts-OFL-1.1.txt`. |
-| [CISA KEV](https://github.com/cisagov/kev-data) | U.S. government/public data; see source notices | Supplies the bundled Known Exploited Vulnerabilities selection. |
-| [CVE List V5](https://github.com/CVEProject/cvelistV5) | See CVE Program terms and repository notices | Supplies published CNA descriptions, affected products, CWE, and CVSS fields where available. |
-
-The precise CVE seed sources, generation time, record count, and SHA-256 are
-recorded in `data/cves_public.provenance.json`. Regenerate it with
-`python scripts/build_cve_seed.py --limit 250`.
-
-### Standards and educational references
-
-- [OWASP Top 10](https://owasp.org/www-project-top-ten/)
-- [OWASP API Security Top 10](https://owasp.org/API-Security/)
-- [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
-- [OWASP Application Security Verification Standard](https://owasp.org/www-project-application-security-verification-standard/)
-- [OWASP Software Assurance Maturity Model](https://owasp.org/www-project-samm/)
-- [OWASP Web Security Testing Guide](https://owasp.org/www-project-web-security-testing-guide/)
-- [OWASP Mobile Application Security](https://mas.owasp.org/)
-- [OWASP LLM Security Verification Standard](https://owasp.org/www-project-llm-verification-standard/)
-- [OWASP Threat Modeling](https://owasp.org/www-project-threat-modeling/)
-- [NIST Secure Software Development Framework, SP 800-218](https://csrc.nist.gov/pubs/sp/800/218/final)
-- [NIST Cybersecurity Framework 2.0](https://www.nist.gov/cyberframework)
-- [SLSA specification 1.2](https://slsa.dev/spec/v1.2/)
-- [Common Weakness Enumeration](https://cwe.mitre.org/)
-- [Common Attack Pattern Enumeration and Classification](https://capec.mitre.org/)
-- [MITRE ATT&CK](https://attack.mitre.org/)
-- [MITRE D3FEND](https://d3fend.mitre.org/)
-- [Common Vulnerability Scoring System 4.0](https://www.first.org/cvss/v4.0/)
-- [Exploit Prediction Scoring System](https://www.first.org/epss/)
-- [CISA SSVC](https://www.cisa.gov/resources-tools/resources/stakeholder-specific-vulnerability-categorization-ssvc)
-- [CISA Known Exploited Vulnerabilities](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)
-- [CIS Benchmarks](https://www.cisecurity.org/cis-benchmarks)
-
-Names, identifiers, and marks identify their respective public standards and
-catalogs. They do not imply endorsement of RØOT by OWASP, NIST, MITRE, CISA,
-the CVE Program, FIRST, the Linux Foundation, or the Center for Internet
-Security. RØOT summaries are educational; linked primary sources are
-authoritative.
-
-RØOT's application code, bilingual explanations, UI, simulated lab flows,
-attack-chain organization, and report templates are distributed under the
-project license unless a notice above says otherwise. Artwork and screenshots
-in `source/` and `image/` are covered by the project license unless noted in
-the file itself.
+RØOT is licensed under [Apache-2.0](LICENSE). Bundled material retains its own
+terms where applicable: [sql.js](https://github.com/sql-js/sql.js) (MIT),
+[PayloadsAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings)
+(MIT), OWASP ASVS (CC BY-SA 4.0), locally hosted fonts (SIL OFL),
+[CISA KEV](https://github.com/cisagov/kev-data), and
+[CVE List V5](https://github.com/CVEProject/cvelistV5). Full license texts are
+in [`licenses/`](licenses/).

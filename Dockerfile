@@ -2,7 +2,7 @@ FROM python:3.12-alpine
 
 WORKDIR /app
 
-COPY serve.py index.html robots.txt sitemap.xml README.md README.ru.md ./
+COPY serve.py index.html robots.txt sitemap.xml README.md ./
 COPY app/ app/
 COPY css/ css/
 COPY data/cves_public.json data/cves_public.provenance.json data/

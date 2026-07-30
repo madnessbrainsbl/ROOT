@@ -31,7 +31,6 @@ const actual = {
 };
 
 const readme = fs.readFileSync('README.md', 'utf8');
-const readmeRu = fs.readFileSync('README.ru.md', 'utf8');
 const landing = fs.readFileSync('index.html', 'utf8');
 
 const row = (text, label) => {
@@ -53,8 +52,6 @@ assert.equal(row(readme, 'Payload examples'), actual.payloads, 'README: payload 
 assert.equal(row(readme, 'Attack-chain scenarios'), actual.chains, 'README: attack chains');
 assert.equal(row(readme, 'Command builders'), actual.builders, 'README: command builders');
 assert.equal(row(readme, 'Security standards and methods'), actual.frameworks, 'README: frameworks');
-assert.equal(row(readmeRu, 'Справочные security-инструменты'), actual.tools, 'README.ru: tools');
-assert.equal(row(readmeRu, 'Security-стандарты и методы'), actual.frameworks, 'README.ru: frameworks');
 
 assert.equal(counter(landing, 'Web CTF challenges'), actual.challenges, 'landing: challenges');
 assert.equal(counter(landing, 'bilingual questions'), actual.quiz, 'landing: questions');
