@@ -31,6 +31,19 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+      - name: Pack portable release
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive="ROOT-${GITHUB_REF_NAME}.zip"
+          git archive --format=zip --output "$archive" "$GITHUB_SHA" -- \
+            README.md Dockerfile docker-compose.yml index.html robots.txt sitemap.xml serve.py \
+            app css data/cves_public.json data/cves_public.provenance.json js licenses source
+          echo "RELEASE_ARCHIVE=$archive" >> "$GITHUB_ENV"
       - env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release create "$GITHUB_REF_NAME" --title "RØOT $GITHUB_REF_NAME" --generate-notes
+        run: >-
+          gh release create "$GITHUB_REF_NAME"
+          "$RELEASE_ARCHIVE#Portable application bundle"
+          --title "RØOT $GITHUB_REF_NAME"
+          --generate-notes
