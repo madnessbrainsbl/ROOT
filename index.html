@@ -4,36 +4,35 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>RØOT — Offline AppSec Training Range</title>
-  <meta name="description" content="Practice OWASP Web and API security, browser CTF challenges, and CVE research locally. No cloud account required.">
+  <meta name="description" content="A local AppSec and DevSecOps workspace for OWASP practice, verification standards, threat modeling, secure delivery, and CVE prioritization.">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://madnessbrainsbl.github.io/ROOT/">
   <link rel="alternate" hreflang="en" href="https://madnessbrainsbl.github.io/ROOT/">
-  <link rel="alternate" hreflang="ru" href="https://madnessbrainsbl.github.io/ROOT/ru/">
   <link rel="alternate" hreflang="x-default" href="https://madnessbrainsbl.github.io/ROOT/">
   <meta property="og:type" content="website">
   <meta property="og:title" content="RØOT — Offline AppSec Training Range">
-  <meta property="og:description" content="OWASP labs, CTF challenges, and a public offline CVE catalog in one self-hosted application.">
+  <meta property="og:description" content="OWASP labs, verification standards, threat modeling, secure delivery, and an offline CVE catalog in one self-hosted workspace.">
   <meta property="og:url" content="https://madnessbrainsbl.github.io/ROOT/">
-  <meta property="og:image" content="https://madnessbrainsbl.github.io/ROOT/cover.jpg">
+  <meta property="og:image" content="https://madnessbrainsbl.github.io/ROOT/source/cover.jpg">
   <meta property="og:image:width" content="1774">
   <meta property="og:image:height" content="887">
   <meta property="og:image:alt" content="RØOT cybersecurity platform cover">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="RØOT — Offline AppSec Training Range">
-  <meta name="twitter:description" content="Practice application security locally without a cloud account.">
-  <meta name="twitter:image" content="https://madnessbrainsbl.github.io/ROOT/cover.jpg">
+  <meta name="twitter:description" content="Practice and operationalize application security locally without a cloud account.">
+  <meta name="twitter:image" content="https://madnessbrainsbl.github.io/ROOT/source/cover.jpg">
   <link rel="icon" href="source/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/landing.css">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"RØOT","applicationCategory":"SecurityApplication","operatingSystem":"Windows, macOS, Linux","softwareVersion":"0.1.0","url":"https://madnessbrainsbl.github.io/ROOT/","downloadUrl":"https://github.com/madnessbrainsbl/ROOT","license":"https://www.apache.org/licenses/LICENSE-2.0","description":"Offline application-security training range for OWASP practice, CTF challenges, and CVE research."}</script>
+  <link rel="stylesheet" href="css/landing.css?v=20260724-2">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"RØOT","applicationCategory":"SecurityApplication","operatingSystem":"Windows, macOS, Linux","softwareVersion":"0.1.0","url":"https://madnessbrainsbl.github.io/ROOT/","downloadUrl":"https://github.com/madnessbrainsbl/ROOT","license":"https://www.apache.org/licenses/LICENSE-2.0","description":"Offline AppSec and DevSecOps workspace for OWASP practice, verification, threat modeling, secure delivery, and CVE research."}</script>
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="./" aria-label="RØOT home">RØOT</a>
+    <a class="brand" href="./" aria-label="RØOT home"><img src="source/root.png" alt="RØOT"></a>
     <nav aria-label="Primary navigation">
       <a href="#features">Features</a>
+      <a href="#frameworks">Frameworks</a>
       <a href="#start">Quick start</a>
-      <a href="README.md">Docs</a>
-      <a class="language" href="ru/" lang="ru">RU</a>
+      <a class="language" href="https://github.com/madnessbrainsbl/ROOT">GitHub</a>
     </nav>
   </header>
 
@@ -41,9 +40,9 @@
     <section class="hero">
       <div class="hero-shade"></div>
       <div class="hero-content">
-        <p class="eyebrow">OPEN SOURCE · OFFLINE FIRST · SELF-HOSTED</p>
+        <p class="eyebrow">OPEN SOURCE · OFFLINE FIRST · APPSEC TO DEVSECOPS</p>
         <h1>Break it safely.<br>Fix it properly.</h1>
-        <p class="lead">A local application-security range that connects OWASP theory, browser-based exploitation, remediation, quizzes, and public CVE research.</p>
+        <p class="lead">A local security workspace that connects hands-on OWASP practice with verification standards, threat modeling, secure delivery, and vulnerability decisions.</p>
         <div class="actions">
           <a class="button primary" href="app/#/lab/A01">Open the app</a>
           <a class="button" href="https://github.com/madnessbrainsbl/ROOT">View on GitHub</a>
@@ -52,20 +51,55 @@
           <li><strong>30</strong><span>Web CTF challenges</span></li>
           <li><strong>10</strong><span>API mini-labs</span></li>
           <li><strong>500</strong><span>bilingual questions</span></li>
+          <li><strong>50</strong><span>standards &amp; methods</span></li>
           <li><strong>250</strong><span>public KEV records</span></li>
         </ul>
       </div>
     </section>
 
     <section class="section intro" id="features">
-      <p class="eyebrow">ONE LOCAL WORKFLOW</p>
-      <h2>From weakness to verified remediation</h2>
-      <p class="section-lead">RØOT is not a live vulnerable target and does not send your work to a third-party service. Its simulations teach the reasoning behind common application-security failures in a controlled browser environment.</p>
+      <p class="eyebrow">ONE LOCAL WORKSPACE</p>
+      <h2>From weakness to governed remediation</h2>
+      <p class="section-lead">RØOT connects the technical loop of finding and fixing flaws with the senior-level work of defining requirements, modeling risk, prioritizing remediation, and protecting delivery.</p>
       <div class="feature-grid">
-        <article><span>01</span><h3>Learn</h3><p>Read bilingual OWASP Web, API, and LLM security material with CWE mappings and practical context.</p></article>
-        <article><span>02</span><h3>Exploit</h3><p>Work through safe client-side simulations, capture flags, and use progressive hints when you are stuck.</p></article>
-        <article><span>03</span><h3>Fix</h3><p>Compare vulnerable and remediated code, then verify the lesson with a structured quiz.</p></article>
-        <article><span>04</span><h3>Investigate</h3><p>Search a reproducible offline snapshot derived from CISA KEV and CVE List V5.</p></article>
+        <article><span>01 · PRACTICE</span><h3>Break and fix</h3><p>Learn OWASP Web, API, and LLM risks through safe browser simulations, remediation, and quizzes.</p></article>
+        <article><span>02 · VERIFY</span><h3>Prove controls</h3><p>Use ASVS, WSTG, MASVS/MASTG, and LLMSVS to turn broad goals into testable evidence.</p></article>
+        <article><span>03 · ENGINEER</span><h3>Model and govern</h3><p>Connect Secure SDLC, SSDF, SAMM, NIST CSF, STRIDE, PASTA, LINDDUN, and abuse cases.</p></article>
+        <article><span>04 · OPERATE</span><h3>Prioritize and ship</h3><p>Combine CVSS, EPSS, SSVC, KEV, SLSA, SBOM, provenance, hardening, and platform controls.</p></article>
+      </div>
+    </section>
+
+    <section class="section standards" aria-labelledby="standards-title">
+      <div class="standards-copy">
+        <p class="eyebrow">OWASP WORKSPACE</p>
+        <h2 id="standards-title">Risks tell you where to look. Standards tell you what to prove.</h2>
+        <p>Move from awareness lists to requirements, testing methods, maturity assessment, and platform-specific verification without leaving the local workspace.</p>
+      </div>
+      <div class="standard-links">
+        <a href="app/#/asvs"><strong>ASVS 5.0</strong><span>Application requirements</span></a>
+        <a href="app/#/frameworks/wstg"><strong>WSTG 4.2</strong><span>Web testing method</span></a>
+        <a href="app/#/frameworks/samm"><strong>OWASP SAMM</strong><span>AppSec maturity</span></a>
+        <a href="app/#/frameworks/masvs-mastg"><strong>MASVS / MASTG</strong><span>Mobile verification</span></a>
+        <a href="app/#/frameworks/llmsvs"><strong>LLMSVS 2.0</strong><span>LLM verification</span></a>
+      </div>
+    </section>
+
+    <section class="section framework-map" id="frameworks" aria-labelledby="frameworks-title">
+      <p class="eyebrow">SENIOR APPSEC MAP</p>
+      <h2 id="frameworks-title">Different questions need different methods</h2>
+      <p class="section-lead">Eleven practical domains connect secure delivery, authorized assessment, verification, remediation and response instead of presenting isolated framework definitions.</p>
+      <div class="map-grid">
+        <a class="map-card wide" href="app/#/frameworks/sdlc"><span>01</span><h3>Secure SDLC</h3><p>NIST SSDF · requirements · design review · security gates · GitOps</p></a>
+        <a class="map-card" href="app/#/frameworks/threat-modeling"><span>02</span><h3>Threat Modeling</h3><p>STRIDE · Attack Trees · Abuse Cases · PASTA · LINDDUN · ATT&amp;CK</p></a>
+        <a class="map-card wide" href="app/#/frameworks/ptes"><span>03</span><h3>Offensive Assessment</h3><p>PTES · NIST SP 800-115 · Kill Chain · adversary emulation · purple team</p></a>
+        <a class="map-card" href="app/#/frameworks/appsec-testing"><span>04</span><h3>AppSec Testing</h3><p>Code review · SAST · DAST · SCA · API testing · exploitability</p></a>
+        <a class="map-card" href="app/#/frameworks/vulnerability-lifecycle"><span>05</span><h3>Vulnerability Management</h3><p>Triage · CVSS · EPSS · KEV · remediation · verified closure</p></a>
+        <a class="map-card" href="app/#/frameworks/identity-api-security"><span>06</span><h3>Identity &amp; API Security</h3><p>Authorization · OAuth/OIDC · JWT · BOLA/BFLA · business abuse</p></a>
+        <a class="map-card" href="app/#/frameworks/supply-chain"><span>07</span><h3>Supply Chain</h3><p>SBOM · SCA · SLSA · provenance · artifact signing</p></a>
+        <a class="map-card" href="app/#/frameworks/infrastructure"><span>08</span><h3>Cloud &amp; Kubernetes</h3><p>CIS · RBAC · workload hardening · network policy · secrets</p></a>
+        <a class="map-card" href="app/#/frameworks/incident-response"><span>09</span><h3>Detection &amp; Resilience</h3><p>Telemetry · incident response · recovery · chaos · backup/DR</p></a>
+        <a class="map-card" href="app/#/frameworks/ai-agentic-security"><span>10</span><h3>AI &amp; Agentic Security</h3><p>Prompt injection · tool boundaries · MCP · evals · MITRE ATLAS</p></a>
+        <a class="map-card" href="app/#/frameworks/governance-compliance"><span>11</span><h3>Governance &amp; Compliance</h3><p>NIST CSF · control mapping · evidence · exceptions · risk ownership</p></a>
       </div>
     </section>
 
@@ -75,21 +109,26 @@
         <h2>No subscription. No cloud lab. No live target.</h2>
         <p>Run RØOT with Python or Docker, keep progress in your browser, and use it in disconnected classrooms, homelabs, or private AppSec environments.</p>
         <ul class="check-list">
-          <li>OWASP Web and API learning tracks</li>
+          <li>OWASP Web, API, LLM, ASVS, WSTG, SAMM, MASVS and LLMSVS</li>
+          <li>Threat modeling and DevSecOps framework map</li>
           <li>Payload library and attack-chain catalog</li>
           <li>Command builders and report templates</li>
           <li>Read-only SQLite CVE API</li>
         </ul>
       </div>
-      <img src="image/owasp-lab.jpg" alt="RØOT OWASP lab showing theory, practice, remediation, and quiz tabs" loading="lazy">
+      <img src="source/image/practice.jpg" alt="RØOT lab for A10 Server-Side Request Forgery with theory, practice, fix, and quiz tabs" loading="lazy">
     </section>
 
     <section class="section screenshots" aria-labelledby="screenshots-title">
       <p class="eyebrow">THE WORKSPACE</p>
-      <h2 id="screenshots-title">Security knowledge you can act on</h2>
+        <h2 id="screenshots-title">One workspace for practice and security decisions</h2>
       <div class="shot-grid">
-        <figure><img src="image/cve-catalog.jpg" alt="Searchable RØOT CVE catalog" loading="lazy"><figcaption>Filter the bundled public CVE snapshot by severity, vendor, product, or ID.</figcaption></figure>
-        <figure><img src="image/tools.jpg" alt="RØOT security tools catalog" loading="lazy"><figcaption>Move from reference material to tools, payloads, commands, and reporting workflows.</figcaption></figure>
+        <figure><img src="source/image/lifecycle.jpg" alt="RØOT lifecycle map grouping security methods by stage" loading="lazy"><figcaption>Enter by lifecycle stage — develop, model, assess, remediate, govern — and reach the method that answers your question.</figcaption></figure>
+        <figure><img src="source/image/owasp.jpg" alt="RØOT OWASP workspace" loading="lazy"><figcaption>Web, API and LLM risk lists sit next to ASVS, WSTG, SAMM, MASVS/MASTG and LLMSVS.</figcaption></figure>
+        <figure><img src="source/image/zero.jpg" alt="RØOT zero-day and CISA KEV catalog" loading="lazy"><figcaption>Filter the bundled public CVE and KEV snapshot by severity, vendor, product, or identifier.</figcaption></figure>
+        <figure><img src="source/image/tools.jpg" alt="RØOT security tools catalog" loading="lazy"><figcaption>420 tool references with purpose, usage, example command and install source.</figcaption></figure>
+        <figure><img src="source/image/commands.jpg" alt="RØOT payload library, command builder and attack chains" loading="lazy"><figcaption>Payload library, command builders and attack chains for authorized labs only.</figcaption></figure>
+        <figure><img src="source/image/quiz.jpg" alt="RØOT quiz with explained answers" loading="lazy"><figcaption>500 questions with the correct answer and the reasoning behind it.</figcaption></figure>
       </div>
     </section>
 
@@ -97,22 +136,23 @@
       <div>
         <p class="eyebrow">RUN LOCALLY</p>
         <h2>One command away</h2>
-        <p>Python 3.10+ is enough. The bundled content and CVE seed work without external credentials.</p>
+        <p>Python 3.10+ is enough. The bundled standards map and public CVE seed work without external credentials.</p>
       </div>
       <div class="commands">
         <pre><code>git clone https://github.com/madnessbrainsbl/ROOT.git
 cd ROOT
-python serve.py</code></pre>
+python3 serve.py</code></pre>
         <pre><code>docker compose up --build</code></pre>
       </div>
     </section>
 
     <section class="final-cta">
       <p class="eyebrow">RØOT v0.1.0</p>
-      <h2>Learn less passively.</h2>
-      <p>Open the range, complete one lab, and tell us where the experience breaks.</p>
+      <h2>Practice the flaw. Verify the control. Govern the fix.</h2>
+      <p>Start with a lab or open the lifecycle map to connect engineering work with AppSec program decisions.</p>
       <div class="actions">
         <a class="button primary" href="app/">Start with A01</a>
+        <a class="button" href="app/#/frameworks">Open the framework map</a>
         <a class="button" href="https://github.com/madnessbrainsbl/ROOT/issues">Send feedback</a>
       </div>
     </section>

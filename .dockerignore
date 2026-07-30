@@ -10,8 +10,6 @@ __pycache__
 data/cves_*.json
 !data/cves_public.json
 !data/cves_public.provenance.json
-cves_full.json
-cves_cvss9.json
 evidence/
 update_cves.py
 *.log

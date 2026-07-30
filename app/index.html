@@ -9,14 +9,15 @@
 <title>RØOT App — OWASP · CTF · CVE</title>
 <link rel="icon" href="source/favicon.ico" sizes="any">
 <link rel="icon" href="source/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/app.css?v=20260730-7">
 </head>
 <body>
 <header id="hdr">
   <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Menu" aria-expanded="false">☰</button>
   <a class="logo-img" href="app/#/lab/A01" title="RØOT">
-    <span class="logo-word">RØOT</span>
+    <img src="source/root.png" alt="RØOT" class="logo-word">
   </a>
+  <nav class="crumbs" id="crumbs" aria-label="Breadcrumb"></nav>
   <div class="actions">
     <div class="lang-switch" role="group" aria-label="Language">
       <button type="button" class="lang-opt" id="lang-ru" data-lang="ru">RU</button>
@@ -26,26 +27,25 @@
 </header>
 
 <nav id="sidebar">
-  <div class="nsec">OWASP</div>
-  <!-- Web / API / LLM Top 10 expandable groups (built in refreshNav) -->
+  <!-- Unified OWASP navigation (built in refreshNav) -->
   <div id="navlist"></div>
-
-  <div class="nsep"></div>
-  <div class="nsec">Zero-Day / KEV</div>
-  <div class="ni" data-nav="zerodays" data-route="zerodays" role="button" tabindex="0">
-    <span class="icon ic-bolt"></span><span class="nn" data-i18n="zeroDays">Zero-Days</span>
-  </div>
 
   <div class="nsep"></div>
   <div class="nsec" data-i18n="toolkit">Resources</div>
   <div class="ni" data-nav="tools" data-route="tools" role="button" tabindex="0">
-    <span class="icon ic-bolt"></span><span class="nn" data-i18n="toolsNav">Tools</span>
+    <span class="nn" data-i18n="toolsNav">Tools</span><span class="nd"></span>
   </div>
   <div class="ni" data-nav="commands" data-route="commands" role="button" tabindex="0">
-    <span class="icon ic-bolt"></span><span class="nn" data-i18n="cmdsNav">Commands</span>
+    <span class="nn" data-i18n="cmdsNav">Commands</span><span class="nd"></span>
   </div>
   <div class="ni" data-nav="reports" data-route="reports" role="button" tabindex="0">
-    <span class="icon ic-doc"></span><span class="nn" data-i18n="reports">Report templates</span>
+    <span class="nn" data-i18n="reports">Report templates</span><span class="nd"></span>
+  </div>
+
+  <div class="nsep"></div>
+  <div class="nsec">Zero-Day / KEV</div>
+  <div class="ni" data-nav="zerodays" data-route="zerodays" role="button" tabindex="0">
+    <span class="nn" data-i18n="zeroDays">Zero-Days</span><span class="nd"></span>
   </div>
 </nav>
 
@@ -82,27 +82,31 @@
 
 <div id="toast"></div>
 
-<script defer src="js/sql-wasm.js"></script>
-<script defer src="js/state.js"></script>
-<script defer src="js/i18n.js"></script>
-<script defer src="js/data.js"></script>
-<script defer src="js/data-labs.js"></script>
-<script defer src="js/data-payloads.js"></script>
-<script defer src="js/data-chains.js"></script>
-<script defer src="js/data-workflows.js"></script>
-<script defer src="js/challenges.js"></script>
-<script defer src="js/zerodays-data.js"></script>
-<script defer src="js/tools-catalog.js"></script>
-<script defer src="js/theory.js"></script>
-<script defer src="js/theory-2025.js"></script>
-<script defer src="js/labs.js"></script>
-<script defer src="js/sql-lab.js"></script>
-<script defer src="js/zerodays.js"></script>
-<script defer src="js/cve-db.js"></script>
-<script defer src="js/cves-cvss9.js"></script>
-<script defer src="js/api-top10.js"></script>
-<script defer src="js/llm-top10.js"></script>
-<script defer src="js/tools.js"></script>
-<script defer src="js/app.js"></script>
+<script defer src="js/vendor/sql-wasm.js?v=20260730-1"></script>
+<script defer src="js/core/state.js?v=20260730-1"></script>
+<script defer src="js/core/i18n.js?v=20260730-1"></script>
+<script defer src="js/data/core.js?v=20260730-1"></script>
+<script defer src="js/data/labs.js?v=20260730-1"></script>
+<script defer src="js/data/payloads.js?v=20260730-1"></script>
+<script defer src="js/data/payload-i18n-ru-core.js?v=20260730-1"></script>
+<script defer src="js/data/payload-i18n-ru-mid.js?v=20260730-1"></script>
+<script defer src="js/data/payload-i18n-ru-tail.js?v=20260730-1"></script>
+<script defer src="js/data/chains.js?v=20260730-1"></script>
+<script defer src="js/data/workflows.js?v=20260730-1"></script>
+<script defer src="js/data/challenges.js?v=20260730-1"></script>
+<script defer src="js/data/zerodays.js?v=20260730-1"></script>
+<script defer src="js/tools/catalog.js?v=20260730-10"></script>
+<script defer src="js/data/theory-2025.js?v=20260730-1"></script>
+<script defer src="js/features/labs.js?v=20260730-1"></script>
+<script defer src="js/features/sql-lab.js?v=20260730-1"></script>
+<script defer src="js/features/zerodays.js?v=20260730-1"></script>
+<script defer src="js/features/cve-db.js?v=20260730-1"></script>
+<script defer src="js/features/cves-cvss9.js?v=20260730-2"></script>
+<script defer src="js/features/api-top10.js?v=20260730-1"></script>
+<script defer src="js/features/llm-top10.js?v=20260730-1"></script>
+<script defer src="js/features/owasp.js?v=20260730-1"></script>
+<script defer src="js/features/frameworks.js?v=20260730-1"></script>
+<script defer src="js/tools/ui.js?v=20260730-17"></script>
+<script defer src="js/core/app.js?v=20260730-1"></script>
 </body>
 </html>

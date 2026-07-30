@@ -2,16 +2,14 @@ FROM python:3.12-alpine
 
 WORKDIR /app
 
-COPY serve.py index.html cover.jpg robots.txt sitemap.xml README.md README.ru.md DISCLAIMER.md ./
+COPY serve.py index.html robots.txt sitemap.xml README.md README.ru.md ./
 COPY app/ app/
 COPY css/ css/
 COPY data/cves_public.json data/cves_public.provenance.json data/
 COPY education/ education/
-COPY image/ image/
 COPY js/ js/
 COPY offline-cve/ offline-cve/
 COPY owasp-labs/ owasp-labs/
-COPY ru/ ru/
 COPY source/ source/
 
 ENV ROOT_HOST=0.0.0.0 \

@@ -14,6 +14,7 @@ Desktop.ini
 .grok/
 .cursor/
 .agent/
+.opencode/
 
 # Python
 __pycache__/
@@ -41,6 +42,8 @@ playwright-report/
 *~
 *.orig
 *.rej
+tmp/
+tmp.count
 
 # Local evidence / hunt logs (not product)
 evidence/
@@ -52,7 +55,7 @@ evidence/
 id_rsa*
 credentials.json
 secrets/
-update_cves.py
+
 
 # Optional local NVD cache
 .nvd_cache/
@@ -64,8 +67,6 @@ update_cves.py
 data/cves_*.json
 !data/cves_public.json
 !data/cves_public.provenance.json
-cves_full.json
-cves_cvss9.json
 
 # Browser / local dumps
 localStorage*

@@ -25,7 +25,10 @@ class AssetParser(HTMLParser):
 def test_local_html_assets_exist() -> None:
     missing: list[str] = []
     for html in ROOT.rglob("*.html"):
-        if any(part in {"node_modules", "playwright-report"} for part in html.parts):
+        if any(
+            part in {"node_modules", "playwright-report", "test-results"}
+            for part in html.parts
+        ):
             continue
         parser = AssetParser()
         parser.feed(html.read_text(encoding="utf-8"))
@@ -57,12 +60,37 @@ def test_runtime_has_no_proprietary_sync_path() -> None:
         path.read_text(encoding="utf-8")
         for path in [
             ROOT / "serve.py",
-            ROOT / "js/cve-db.js",
-            ROOT / "js/cves-cvss9.js",
+            ROOT / "js/features/cve-db.js",
+            ROOT / "js/features/cves-cvss9.js",
         ]
     ).lower()
     for forbidden in ("zerodaysignal", "/api/cves/update", "zeroday_api_key"):
         assert forbidden not in source
+
+
+def test_senior_framework_catalog_is_present() -> None:
+    source = (ROOT / "js/features/frameworks.js").read_text(encoding="utf-8")
+    required = {
+        "samm",
+        "wstg",
+        "masvs-mastg",
+        "llmsvs",
+        "attack-trees",
+        "abuse-cases",
+        "pasta",
+        "linddun",
+        "attack-d3fend",
+        "nist-csf",
+        "supply-chain",
+        "infrastructure",
+        "appsec-testing",
+        "vulnerability-lifecycle",
+        "identity-api-security",
+        "incident-response",
+        "ai-agentic-security",
+        "governance-compliance",
+    }
+    assert all(f"id: '{item}'" in source for item in required)
 
 
 def test_docker_copy_sources_exist() -> None:

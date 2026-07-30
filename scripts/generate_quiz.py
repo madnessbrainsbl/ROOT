@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """Build bilingual OWASP Top 10:2025 quiz from RU + EN markdown sources.
 
-Output: js/data-labs.js quiz arrays with M(ru, en) for every field.
+Output: js/data/labs.js quiz arrays with M(ru, en) for every field.
 
 Correct-answer text is preserved; option order is shuffled so the right
 letter is balanced across A/B/C/D. RU and EN option order stay aligned.
@@ -19,7 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 MD_RU = ROOT / "content" / "owasp-quiz-500-2025.md"
 MD_EN = ROOT / "content" / "owasp-quiz-500-2025-en.md"
-DATA_JS = ROOT / "js" / "data-labs.js"
+DATA_JS = ROOT / "js" / "data" / "labs.js"
 
 # Quiz document category (OWASP Top 10:2025) → app lab module code (by topic)
 DOC_TO_APP = {

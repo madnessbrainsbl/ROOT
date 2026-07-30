@@ -1,7 +1,10 @@
 name: Pages
 
 on:
-  push:
+  # Deploy only after CI has finished, so a red build never reaches production.
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
     branches: [main]
   workflow_dispatch:
 
@@ -16,12 +19,21 @@ concurrency:
 
 jobs:
   deploy:
+    # workflow_dispatch has no source run, so let manual deploys through.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.conclusion == 'success'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          # workflow_run checks out the default branch tip by default, which can
+          # already be a newer commit than the one CI validated. Pin to the exact
+          # SHA that passed, otherwise the gate proves nothing.
+          ref: ${{ github.event.workflow_run.head_sha || github.ref }}
       - uses: actions/upload-pages-artifact@v5
         with:
           path: .

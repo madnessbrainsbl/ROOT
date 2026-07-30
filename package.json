@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "test": "node --test tests/app-router.test.js tests/chain-catalog.test.js tests/cve-db-static.test.js",
-    "test:e2e": "playwright test",
+    "test": "node --test tests/app-router.test.js tests/chain-catalog.test.js tests/cve-db-static.test.js tests/tools-catalog.test.js tests/content-counts.test.js tests/payload-localization.test.js tests/report-templates.test.js",
+    "test:e2e": "node node_modules/@playwright/test/cli.js test",
     "check": "node scripts/check_js.js"
   },
   "devDependencies": {

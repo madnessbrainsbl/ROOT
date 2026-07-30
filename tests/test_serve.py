@@ -37,6 +37,7 @@ def api_url(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Iterator[str]:
     seed.write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
     monkeypatch.setattr(serve, "SEED_PATH", seed)
     monkeypatch.setattr(serve, "DB_PATH", tmp_path / "cves.sqlite3")
+    monkeypatch.setattr(serve, "DB_BUILD_DIR", tmp_path)
     serve.set_state(imported=0, total=0, ready=False, error=None)
     serve.build_cve_db()
 
@@ -86,6 +87,26 @@ def test_invalid_seed_is_rejected(tmp_path: Path) -> None:
     seed.write_text('[{"cve_id":"not-a-cve"}]', encoding="utf-8")
     with pytest.raises(ValueError, match="Invalid CVE record"):
         serve.load_seed(seed)
+
+
+def test_auto_mode_prefers_local_chunks(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    public = tmp_path / "cves_public.json"
+    public.write_text("[]", encoding="utf-8")
+    chunk = tmp_path / "cves_000.json"
+    chunk.write_text("[]", encoding="utf-8")
+    monkeypatch.setattr(serve, "DATA_DIR", tmp_path)
+    monkeypatch.setattr(serve, "PUBLIC_SEED_PATH", public)
+    monkeypatch.setattr(serve, "SEED_PATH", public)
+    monkeypatch.setattr(serve, "CVE_MODE", "auto")
+    assert serve.cve_source_paths() == ([chunk], "full")
+
+
+def test_full_chunk_total_only_reads_last_chunk(tmp_path: Path) -> None:
+    chunks = [tmp_path / f"cves_{index:03d}.json" for index in range(3)]
+    chunks[-1].write_text('[{"cve_id":"CVE-2026-0001"}]', encoding="utf-8")
+    assert serve.source_total(chunks, "full") == 20_001
 
 
 def test_configure_stdio_uses_utf8(monkeypatch: pytest.MonkeyPatch) -> None:

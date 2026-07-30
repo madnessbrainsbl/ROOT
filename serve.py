@@ -6,9 +6,12 @@ from __future__ import annotations
 import json
 import os
 import re
+import shutil
 import sqlite3
 import sys
+import tempfile
 import threading
+from contextlib import closing
 from http import HTTPStatus
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -17,16 +20,29 @@ from urllib.parse import parse_qs, unquote, urlparse
 
 ROOT = Path(__file__).resolve().parent
 DATA_DIR = ROOT / "data"
-SEED_PATH = DATA_DIR / "cves_public.json"
+PUBLIC_SEED_PATH = DATA_DIR / "cves_public.json"
+KEV_SYNC_NAME = "cves_kev_sync.json"
+SEED_PATH = Path(os.environ.get("ROOT_CVE_SEED", str(PUBLIC_SEED_PATH)))
+CVE_MODE = os.environ.get("ROOT_CVE_MODE", "auto").strip().lower()
 DB_PATH = Path(os.environ.get("ROOT_DB_PATH", str(DATA_DIR / "cves.sqlite3")))
+# SQLite locking is unreliable on shared folders (for example vmhgfs-fuse).
+# Build locally, then copy the completed database into its configured location.
+DB_BUILD_DIR = Path(os.environ.get("ROOT_DB_BUILD_DIR", tempfile.gettempdir()))
 TEXT_ENCODING = "utf-8"
 DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 8080
 MAX_LIMIT = 100
 MAX_QUERY_LENGTH = 200
+CVE_CHUNK_SIZE = 10_000
 VALID_SEVERITIES = {"CRITICAL", "HIGH", "MEDIUM", "LOW", "NONE"}
 CVE_ID_RE = re.compile(r"^CVE-\d{4}-\d{4,}$", re.IGNORECASE)
-STATE: dict[str, Any] = {"imported": 0, "total": 0, "ready": False, "error": None}
+STATE: dict[str, Any] = {
+    "imported": 0,
+    "total": 0,
+    "ready": False,
+    "error": None,
+    "dataset": None,
+}
 STATE_LOCK = threading.Lock()
 
 
@@ -64,6 +80,56 @@ def load_seed(path: Path | None = None) -> list[dict[str, Any]]:
     return rows
 
 
+def cve_source_paths() -> tuple[list[Path], str]:
+    if CVE_MODE not in {"auto", "public", "full"}:
+        raise ValueError("ROOT_CVE_MODE must be auto, public, or full")
+    if SEED_PATH != PUBLIC_SEED_PATH:
+        return [SEED_PATH], "custom"
+    if CVE_MODE == "public":
+        return [PUBLIC_SEED_PATH], "public"
+    chunks = sorted(DATA_DIR.glob("cves_[0-9][0-9][0-9].json"))
+    if chunks:
+        kev = DATA_DIR / KEV_SYNC_NAME
+        return ([kev] if kev.is_file() else []) + chunks, "full"
+    if CVE_MODE == "full":
+        raise FileNotFoundError("Full CVE dataset chunks are missing")
+    return [PUBLIC_SEED_PATH], "public"
+
+
+def source_signature(paths: list[Path]) -> str:
+    return json.dumps(
+        [(path.name, path.stat().st_size, path.stat().st_mtime_ns) for path in paths],
+        separators=(",", ":"),
+    )
+
+
+def source_total(paths: list[Path], dataset: str) -> int:
+    chunks = [p for p in paths if re.fullmatch(r"cves_\d{3}\.json", p.name)]
+    extras = [path for path in paths if path not in chunks]
+    if dataset == "full" and chunks:
+        return sum(len(load_seed(path)) for path in extras) + (
+            (len(chunks) - 1) * CVE_CHUNK_SIZE + len(load_seed(chunks[-1]))
+        )
+    return sum(len(load_seed(path)) for path in paths)
+
+
+def use_current_database(signature: str, dataset: str) -> bool:
+    if not DB_PATH.is_file():
+        return False
+    try:
+        with closing(sqlite3.connect(DB_PATH, timeout=30)) as database:
+            stored = database.execute(
+                "SELECT value FROM metadata WHERE key = 'source_signature'"
+            ).fetchone()
+            if stored is None or stored[0] != signature:
+                return False
+            total = database.execute("SELECT COUNT(*) FROM cves").fetchone()[0]
+        set_state(imported=total, total=total, ready=True, error=None, dataset=dataset)
+        return True
+    except sqlite3.Error:
+        return False
+
+
 def create_schema(database: sqlite3.Connection) -> None:
     database.executescript(
         """
@@ -77,52 +143,91 @@ def create_schema(database: sqlite3.Connection) -> None:
           title TEXT NOT NULL,
           data TEXT NOT NULL
         );
-        CREATE INDEX cves_published_idx ON cves(published_at DESC);
-        CREATE INDEX cves_severity_idx ON cves(severity);
+        CREATE TABLE metadata (
+          key TEXT PRIMARY KEY,
+          value TEXT NOT NULL
+        );
         """
     )
 
 
 def build_cve_db() -> None:
-    temporary = DB_PATH.with_suffix(".tmp.sqlite3")
+    temporary = DB_BUILD_DIR / f".{DB_PATH.name}.tmp"
+    staging = DB_PATH.with_suffix(".staging.sqlite3")
     try:
-        rows = load_seed()
-        set_state(imported=0, total=len(rows), ready=False, error=None)
+        paths, dataset = cve_source_paths()
+        signature = source_signature(paths)
+        if use_current_database(signature, dataset):
+            return
+        total = source_total(paths, dataset)
+        set_state(imported=0, total=total, ready=False, error=None, dataset=dataset)
+        DB_BUILD_DIR.mkdir(parents=True, exist_ok=True)
         temporary.unlink(missing_ok=True)
         database = connect(temporary)
         try:
+            database.execute("PRAGMA journal_mode=OFF")
+            database.execute("PRAGMA synchronous=OFF")
             create_schema(database)
-            for start in range(0, len(rows), 100):
-                batch = rows[start : start + 100]
-                database.executemany(
-                    """
-                    INSERT INTO cves
-                    (cve_id, severity, cvss_score, affected_vendor,
-                     affected_product, published_at, title, data)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                    """,
-                    [
-                        (
-                            row["cve_id"],
-                            str(row.get("severity") or "NONE").upper(),
-                            row.get("cvss_score"),
-                            str(row.get("affected_vendor") or ""),
-                            str(row.get("affected_product") or ""),
-                            row.get("published_at"),
-                            str(row.get("title") or row["cve_id"]),
-                            json.dumps(row, ensure_ascii=False, separators=(",", ":")),
-                        )
-                        for row in batch
-                    ],
-                )
+            imported = 0
+            for path in paths:
+                rows = load_seed(path)
+                for start in range(0, len(rows), 500):
+                    batch = rows[start : start + 500]
+                    database.executemany(
+                        """
+                        INSERT OR REPLACE INTO cves
+                        (cve_id, severity, cvss_score, affected_vendor,
+                         affected_product, published_at, title, data)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                        """,
+                        [
+                            (
+                                row["cve_id"],
+                                str(row.get("severity") or "NONE").upper(),
+                                row.get("cvss_score"),
+                                str(row.get("affected_vendor") or ""),
+                                str(row.get("affected_product") or ""),
+                                row.get("published_at"),
+                                str(row.get("title") or row["cve_id"]),
+                                json.dumps(
+                                    row,
+                                    ensure_ascii=False,
+                                    separators=(",", ":"),
+                                ),
+                            )
+                            for row in batch
+                        ],
+                    )
+                    imported += len(batch)
+                    set_state(imported=imported)
                 database.commit()
-                set_state(imported=min(start + len(batch), len(rows)))
+            database.executescript(
+                """
+                CREATE INDEX cves_published_idx ON cves(published_at DESC);
+                CREATE INDEX cves_severity_published_idx
+                  ON cves(severity, published_at DESC, cve_id DESC);
+                """
+            )
+            database.executemany(
+                "INSERT INTO metadata (key, value) VALUES (?, ?)",
+                (("source_signature", signature), ("dataset", dataset)),
+            )
+            database.commit()
         finally:
             database.close()
-        temporary.replace(DB_PATH)
-        set_state(imported=len(rows), ready=True)
+        if temporary.parent.resolve() == DB_PATH.parent.resolve():
+            temporary.replace(DB_PATH)
+        else:
+            staging.unlink(missing_ok=True)
+            shutil.copyfile(temporary, staging)
+            staging.replace(DB_PATH)
+            temporary.unlink()
+        with closing(connect()) as database:
+            imported = database.execute("SELECT COUNT(*) FROM cves").fetchone()[0]
+        set_state(imported=imported, total=imported, ready=True)
     except (OSError, ValueError, json.JSONDecodeError, sqlite3.Error) as error:
         temporary.unlink(missing_ok=True)
+        staging.unlink(missing_ok=True)
         set_state(ready=False, error=str(error))
         print(
             f"CVE database initialization failed: {error}", file=sys.stderr, flush=True
@@ -155,11 +260,13 @@ def where_clause(params: dict[str, list[str]]) -> tuple[str, list[str]]:
     if len(query) > MAX_QUERY_LENGTH:
         raise ValueError(f"q must not exceed {MAX_QUERY_LENGTH} characters")
     if query:
+        pattern = query.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
         clauses.append(
-            "(cve_id LIKE ? OR title LIKE ? OR affected_vendor LIKE ? "
-            "OR affected_product LIKE ?)"
+            "(cve_id LIKE ? ESCAPE '\\' OR title LIKE ? ESCAPE '\\' "
+            "OR affected_vendor LIKE ? ESCAPE '\\' "
+            "OR affected_product LIKE ? ESCAPE '\\')"
         )
-        values.extend([f"%{query}%"] * 4)
+        values.extend([f"%{pattern}%"] * 4)
     return (" WHERE " + " AND ".join(clauses)) if clauses else "", values
 
 
@@ -176,9 +283,12 @@ class RootHandler(SimpleHTTPRequestHandler):
 
     def end_headers(self) -> None:
         path = urlparse(self.path).path
-        cache_control = (
-            "no-store" if path.endswith(("/", ".html")) else "public, max-age=3600"
-        )
+        if path.startswith("/api/") or path.endswith(("/", ".html")):
+            cache_control = "no-store"
+        elif path.endswith((".js", ".css", ".json")):
+            cache_control = "no-cache"
+        else:
+            cache_control = "public, max-age=3600"
         self.send_header("Cache-Control", cache_control)
         self.send_header(
             "Content-Security-Policy",
@@ -250,7 +360,7 @@ class RootHandler(SimpleHTTPRequestHandler):
             return
         if path == "/api/cves/counts":
             where, values = where_clause(params)
-            with connect() as database:
+            with closing(connect()) as database:
                 rows = database.execute(
                     f"SELECT severity, COUNT(*) FROM cves{where} GROUP BY severity",
                     values,
@@ -263,7 +373,7 @@ class RootHandler(SimpleHTTPRequestHandler):
             where, values = where_clause(params)
             limit = parse_bounded_int(params, "limit", 50, 1, MAX_LIMIT)
             offset = parse_bounded_int(params, "offset", 0, 0, 1_000_000)
-            with connect() as database:
+            with closing(connect()) as database:
                 total = database.execute(
                     f"SELECT COUNT(*) FROM cves{where}", values
                 ).fetchone()[0]
@@ -280,7 +390,7 @@ class RootHandler(SimpleHTTPRequestHandler):
             cve_id = unquote(path.removeprefix("/api/cves/")).upper()
             if not CVE_ID_RE.fullmatch(cve_id):
                 raise ValueError("invalid CVE ID")
-            with connect() as database:
+            with closing(connect()) as database:
                 row = database.execute(
                     "SELECT data FROM cves WHERE cve_id = ?", (cve_id,)
                 ).fetchone()
