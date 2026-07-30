@@ -154,6 +154,8 @@ const UI = (() => {
     { code: 'A10', legacyCode: 'A10', challengeIds: ['a10-fail-open'], name: 'Mishandling of Exceptional Conditions', nameRu: 'Некорректная обработка нештатных условий', blurb: { en: 'Fail-open behavior, incomplete rollback and unsafe error handling.', ru: 'Fail-open, неполный откат операций и небезопасная обработка ошибок.' } },
   ];
 
+  const OWASP_TOP10_2017 = { A01: 'A05', A02: 'A06', A03: 'A09', A04: 'A03', A05: 'A01', A06: '—', A07: 'A02', A08: 'A08', A09: 'A10', A10: '—' };
+
   function categoryForLab(code) {
     return OWASP_TOP10_2025.find(category => category.code === code) || null;
   }
@@ -531,8 +533,9 @@ const UI = (() => {
               </div>
               <div class="meta-block">
                 <div class="meta-label">${I18n.t('owaspMap')}</div>
-                <div class="meta-line">OWASP Top 10:2021: <strong>${category.code === 'A10' ? '—' : m.owasp2021}</strong></div>
-                <div class="meta-line">OWASP Top 10:2025: <strong>${category.code}</strong>${category.code === 'A10' ? ` (${I18n.lang() === 'en' ? 'new category' : 'новая категория'})` : ''}</div>
+                <div class="meta-line">2017: <strong>${OWASP_TOP10_2017[category.code]}</strong></div>
+                <div class="meta-line">2021: <strong>${category.code === 'A10' ? '—' : m.owasp2021}</strong></div>
+                <div class="meta-line">2025: <strong>${category.code}</strong></div>
               </div>
 
             </aside>

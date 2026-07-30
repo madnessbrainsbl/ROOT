@@ -44,7 +44,6 @@ NEW_METADATA = {
     "guac": ("devsecops", "supply-chain"),
     "chainguard-images": ("devsecops", "supply-chain"),
     "wolfi": ("devsecops", "supply-chain"),
-    "socket": ("devsecops", "supply-chain"),
     "stepsecurity": ("devsecops", "cicd"),
     "garak": ("appsec", "ai-security"),
     "pyrit": ("appsec", "ai-security"),

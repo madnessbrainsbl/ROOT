@@ -106,8 +106,6 @@ def incremental_update(token: str) -> None:
     probe = fetch_page(1, token)
     pag = probe.get("pagination") or {}
     remote_total = pag.get("total_items", 0)
-    total_pages = pag.get("total_pages", 1)
-
     new_count = remote_total - local_count
     if new_count <= 0:
         print(f"Already up to date ({remote_total} remote = {local_count} local).")

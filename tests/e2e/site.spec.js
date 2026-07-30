@@ -163,8 +163,9 @@ test('Web Top 10 cards open labs without redundant buttons', async ({ page }) =>
   await cards.nth(1).click();
   await expect(page).toHaveURL(/#\/lab\/A02$/);
   await expect(page.getByRole('heading', { name: 'Security Misconfiguration', exact: true })).toBeVisible();
-  await expect(page.getByText('OWASP Top 10:2021: A05', { exact: true })).toBeVisible();
-  await expect(page.getByText('OWASP Top 10:2025: A02', { exact: true })).toBeVisible();
+  await expect(page.getByText('2017: A06', { exact: true })).toBeVisible();
+  await expect(page.getByText('2021: A05', { exact: true })).toBeVisible();
+  await expect(page.getByText('2025: A02', { exact: true })).toBeVisible();
   await page.goto('/app/#/lab/A01');
   await page.getByRole('tab', { name: 'Practice', exact: true }).click();
   await expect(page.locator('#chal-strip .chal-chip')).toHaveCount(5);
@@ -308,7 +309,7 @@ test('security frameworks map opens the decoded STRIDE taxonomy', async ({ page 
   await page.goto('/app/#/frameworks/governance-compliance');
   await expect(page.getByRole('heading', { name: 'Работающие меры вместо формальных чек-листов', exact: true })).toBeVisible();
   await page.goto('/app/#/frameworks');
-  await expect(page.getByRole('heading', { name: 'Методологии безопасности на протяжении всего жизненного цикла', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Практики безопасности на всём жизненном цикле', exact: true })).toBeVisible();
 });
 
 test('Offensive Assessment methods are detailed, bilingual and cross-linked', async ({ page }) => {

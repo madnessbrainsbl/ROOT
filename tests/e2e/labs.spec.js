@@ -1,6 +1,11 @@
 const { test, expect } = require('@playwright/test');
 
 const LAB_SUITE_TIMEOUT_MS = 60_000;
+const LEGACY_TO_2025_CATEGORY = { A01: 'A01', A02: 'A04', A03: 'A05', A04: 'A06', A05: 'A02', A06: 'A03', A07: 'A07', A08: 'A08', A09: 'A09', A10: 'A10' };
+
+function categoryForChallenge(id) {
+  return id.startsWith('a10-') && id !== 'a10-fail-open' ? 'A01' : LEGACY_TO_2025_CATEGORY[id.slice(0, 3).toUpperCase()];
+}
 
 const LABS = [
   ['a01-idor-order',     { '#a01-id': '100' },                                              ['a01Fetch']],
@@ -54,12 +59,17 @@ test('every lab reproduces its vulnerability and awards the matching flag', asyn
     Object.fromEntries((CHALLENGES.all ? CHALLENGES.all() : []).map(c => [c.id, c.flag]))));
 
   const rows = [];
+  let currentCategory = null;
   for (const [id, fills, handlers] of LABS) {
-    const mod = id.slice(0, 3).toUpperCase();
-    await page.goto(`/app/#/lab/${mod}`);
-    await page.locator('#lab-tabs [data-tab="lab"]').click();
-    const idx = LABS.filter(l => l[0].startsWith(mod.toLowerCase())).findIndex(l => l[0] === id);
-    await page.locator('#chal-strip button').nth(idx).click();
+    const category = categoryForChallenge(id);
+    if (category !== currentCategory) {
+      await page.evaluate(code => UI.route('lab', code), category);
+      await expect(page.locator('.lab-heading')).toBeVisible();
+      currentCategory = category;
+    }
+    const labTab = page.locator('#lab-tabs [data-tab="lab"]');
+    if (await labTab.getAttribute('aria-selected') !== 'true') await labTab.click();
+    await page.locator(`#chal-strip button[onclick*="'${id}'"]`).click();
 
     let err = null;
     try {
