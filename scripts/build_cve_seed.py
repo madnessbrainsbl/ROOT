@@ -34,7 +34,7 @@ def fetch_json(url: str, timeout: float) -> dict[str, Any]:
     with urllib.request.urlopen(request, timeout=timeout) as response:
         payload = json.load(response)
     if not isinstance(payload, dict):
-        raise ValueError(f"Expected a JSON object from {url}")
+        raise TypeError(f"Expected a JSON object from {url}")
     return payload
 
 
@@ -174,7 +174,7 @@ def main() -> int:
     catalog = fetch_json(CISA_KEV_URL, args.timeout)
     vulnerabilities = catalog.get("vulnerabilities")
     if not isinstance(vulnerabilities, list):
-        raise ValueError("CISA KEV response has no vulnerabilities array")
+        raise TypeError("CISA KEV response has no vulnerabilities array")
     selected = sorted(
         vulnerabilities,
         key=lambda item: (str(item.get("dateAdded", "")), str(item.get("cveID", ""))),

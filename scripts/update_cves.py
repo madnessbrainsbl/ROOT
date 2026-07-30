@@ -11,25 +11,27 @@ import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
-from urllib.error import URLError, HTTPError
 
 # ── Configuration ─────────────────────────────────────────────────────────────
-EMAIL      = os.environ.get("ZERODAY_EMAIL", "")
-PASSWORD   = os.environ.get("ZERODAY_PASSWORD", "")
-API_KEY    = os.environ.get("ZERODAY_API_KEY", "")
-LOGIN_URL  = "https://api.zerodaysignal.com/api/auth/login"
-BASE_URL   = "https://api.zerodaysignal.com/api/cve/recent"
-PAGE_SIZE  = 10
+EMAIL = os.environ.get("ZERODAY_EMAIL", "")
+PASSWORD = os.environ.get("ZERODAY_PASSWORD", "")
+API_KEY = os.environ.get("ZERODAY_API_KEY", "")
+LOGIN_URL = "https://api.zerodaysignal.com/api/auth/login"
+BASE_URL = "https://api.zerodaysignal.com/api/cve/recent"
+PAGE_SIZE = 10
 CHUNK_SIZE = 10_000
-DATA_DIR   = Path(__file__).resolve().parent.parent / "data"
-DB_PATH    = DATA_DIR / "cves.sqlite3"
+DATA_DIR = Path(__file__).resolve().parent.parent / "data"
+DB_PATH = DATA_DIR / "cves.sqlite3"
 # ──────────────────────────────────────────────────────────────────────────────
 
 
 def get_token(email: str, password: str) -> str:
     if not email or not password:
-        raise ValueError("Set ZERODAY_EMAIL and ZERODAY_PASSWORD or pass --email and --password")
+        raise ValueError(
+            "Set ZERODAY_EMAIL and ZERODAY_PASSWORD or pass --email and --password"
+        )
     payload = json.dumps({"email": email, "password": password}).encode()
     req = Request(LOGIN_URL, data=payload, headers={"Content-Type": "application/json"})
     with urlopen(req, timeout=15) as resp:
@@ -39,11 +41,14 @@ def get_token(email: str, password: str) -> str:
 
 def fetch_page(page: int, token: str) -> dict:
     url = f"{BASE_URL}?page={page}&limit={PAGE_SIZE}"
-    req = Request(url, headers={
-        "Authorization": f"Bearer {token}",
-        "Accept": "application/json",
-        "User-Agent": "Mozilla/5.0 ROOT-CVE-Updater/1.0",
-    })
+    req = Request(
+        url,
+        headers={
+            "Authorization": f"Bearer {token}",
+            "Accept": "application/json",
+            "User-Agent": "Mozilla/5.0 ROOT-CVE-Updater/1.0",
+        },
+    )
     with urlopen(req, timeout=30) as resp:
         return json.loads(resp.read())
 
@@ -62,10 +67,12 @@ def save_chunks(records: list[dict]) -> list[Path]:
     paths = []
     n_chunks = max(1, math.ceil(len(records) / CHUNK_SIZE))
     for i in range(n_chunks):
-        chunk = records[i * CHUNK_SIZE:(i + 1) * CHUNK_SIZE]
+        chunk = records[i * CHUNK_SIZE : (i + 1) * CHUNK_SIZE]
         path = DATA_DIR / f"cves_{i:03d}.json"
         temporary = path.with_suffix(".json.tmp")
-        temporary.write_text(json.dumps(chunk, ensure_ascii=False, separators=(",", ":")))
+        temporary.write_text(
+            json.dumps(chunk, ensure_ascii=False, separators=(",", ":"))
+        )
         temporary.replace(path)
         paths.append(path)
     for old in sorted(DATA_DIR.glob("cves_[0-9]*.json")):
@@ -85,9 +92,14 @@ def insert_into_db(records: list[dict]) -> None:
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
         [
             (
-                r["cve_id"], r.get("severity"), r.get("cvss_score"),
-                r.get("affected_vendor"), r.get("affected_product"), r.get("published_at"),
-                r.get("title"), json.dumps(r, ensure_ascii=False, separators=(",", ":")),
+                r["cve_id"],
+                r.get("severity"),
+                r.get("cvss_score"),
+                r.get("affected_vendor"),
+                r.get("affected_product"),
+                r.get("published_at"),
+                r.get("title"),
+                json.dumps(r, ensure_ascii=False, separators=(",", ":")),
             )
             for r in records
         ],
@@ -112,7 +124,10 @@ def incremental_update(token: str) -> None:
         return
 
     pages_to_fetch = math.ceil(new_count / PAGE_SIZE)
-    print(f"Remote: {remote_total}. Need {new_count} new CVEs = {pages_to_fetch} pages.", flush=True)
+    print(
+        f"Remote: {remote_total}. Need {new_count} new CVEs = {pages_to_fetch} pages.",
+        flush=True,
+    )
 
     new_records: list[dict] = []
     # Page 1 already fetched — grab its items first
@@ -121,7 +136,9 @@ def incremental_update(token: str) -> None:
 
     pages = range(2, pages_to_fetch + 1)
     with ThreadPoolExecutor(max_workers=8) as executor:
-        for page, data in zip(pages, executor.map(lambda page: fetch_page(page, token), pages)):
+        for page, data in zip(
+            pages, executor.map(lambda page: fetch_page(page, token), pages)
+        ):
             items = data.get("results") or []
             new_records.extend(items)
             print(f"PROGRESS:{page}/{pages_to_fetch}", flush=True)
@@ -142,12 +159,18 @@ def incremental_update(token: str) -> None:
 
 def main() -> None:
     import argparse
-    parser = argparse.ArgumentParser(description="Update CVE archive from ZeroDay Signal")
+
+    parser = argparse.ArgumentParser(
+        description="Update CVE archive from ZeroDay Signal"
+    )
     parser.add_argument("--api-key", default=API_KEY)
     parser.add_argument("--email", default=EMAIL)
     parser.add_argument("--password", default=PASSWORD)
-    parser.add_argument("--incremental", action="store_true",
-                        help="Only download CVEs not already on disk (fast)")
+    parser.add_argument(
+        "--incremental",
+        action="store_true",
+        help="Only download CVEs not already on disk (fast)",
+    )
     args = parser.parse_args()
 
     token = args.api_key.strip()

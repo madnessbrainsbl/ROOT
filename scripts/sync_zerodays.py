@@ -10,7 +10,6 @@ from pathlib import Path
 from urllib.error import URLError
 from urllib.request import Request, urlopen
 
-
 ROOT = Path(__file__).resolve().parent.parent
 CATALOG = ROOT / "js" / "data" / "zerodays.js"
 KEV_SEED = ROOT / "data" / "cves_kev_sync.json"

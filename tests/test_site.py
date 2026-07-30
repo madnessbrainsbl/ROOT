@@ -1,6 +1,6 @@
+import shlex
 from html.parser import HTMLParser
 from pathlib import Path
-import shlex
 from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parent.parent

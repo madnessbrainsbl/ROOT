@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """Build bilingual OWASP Top 10:2025 quiz from RU + EN markdown sources.
 
 Output: js/data/labs.js quiz arrays with M(ru, en) for every field.
@@ -66,12 +65,12 @@ def parse_options(qtext: str) -> tuple[str, list[str]] | None:
 
 def parse_markdown(md: str, answer_label: str) -> dict[str, list[dict]]:
     """answer_label: 'Ответ' or 'Answer'."""
-    parts = re.split(r"^## (A\d{2}:2025 — .+)$", md, flags=re.M)
+    parts = re.split(r"^## (A\d{2}:2025 — .+)$", md, flags=re.MULTILINE)
     parsed: dict[str, list[dict]] = {}
     label_re = re.escape(answer_label)
     for i in range(1, len(parts), 2):
         title = parts[i]
-        body = re.split(r"^---\s*$", parts[i + 1], maxsplit=1, flags=re.M)[0]
+        body = re.split(r"^---\s*$", parts[i + 1], maxsplit=1, flags=re.MULTILINE)[0]
         code = title[:3]
         qs = re.findall(
             rf"(?ms)^(\d+)\.\s+(.+?)\n\s+{label_re}:\s+\*\*([A-D])\*\*(.*?)$",
@@ -89,7 +88,7 @@ def parse_markdown(md: str, answer_label: str) -> dict[str, list[dict]]:
             expl = extra.strip()
             if expl.startswith("(") and expl.endswith(")"):
                 expl = expl[1:-1].strip()
-            if expl.startswith("Ответ:") or expl.startswith("Answer:"):
+            if expl.startswith(("Ответ:", "Answer:")):
                 expl = expl.split(":", 1)[1].strip()
             items.append(
                 {
@@ -140,7 +139,7 @@ def diversify_pair(ru: dict, en: dict, global_i: int) -> dict:
     dist_ru, dist_en = dist_ru[:3], dist_en[:3]
 
     target = global_i % 4
-    seed = hashlib.sha256(f"{ru['q']}\0{ru['n']}\0{global_i}".encode("utf-8")).digest()
+    seed = hashlib.sha256(f"{ru['q']}\0{ru['n']}\0{global_i}".encode()).digest()
     rng = random.Random(int.from_bytes(seed[:8], "big"))
     order = list(range(3))
     rng.shuffle(order)

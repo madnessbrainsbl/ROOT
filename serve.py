@@ -69,7 +69,7 @@ def load_seed(path: Path | None = None) -> list[dict[str, Any]]:
     seed = path or SEED_PATH
     payload = json.loads(seed.read_text(encoding=TEXT_ENCODING))
     if not isinstance(payload, list):
-        raise ValueError(f"{seed} must contain a JSON array")
+        raise TypeError(f"{seed} must contain a JSON array")
     rows: list[dict[str, Any]] = []
     for index, row in enumerate(payload):
         if not isinstance(row, dict) or not CVE_ID_RE.fullmatch(
