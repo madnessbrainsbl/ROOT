@@ -6,10 +6,7 @@ COPY serve.py index.html robots.txt sitemap.xml README.md ./
 COPY app/ app/
 COPY css/ css/
 COPY data/cves_public.json data/cves_public.provenance.json data/
-COPY education/ education/
 COPY js/ js/
-COPY offline-cve/ offline-cve/
-COPY owasp-labs/ owasp-labs/
 COPY source/ source/
 
 ENV ROOT_HOST=0.0.0.0 \

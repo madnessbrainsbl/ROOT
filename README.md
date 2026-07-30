@@ -153,10 +153,10 @@ include the smallest relevant test. Content must cite compatible sources and
 licenses. Do not submit secrets, personal data, proprietary material, or live
 target data.
 
-## License and notices
+## Third-party licenses
 
-RØOT is licensed under [Apache-2.0](LICENSE). Bundled material retains its own
-terms where applicable: [sql.js](https://github.com/sql-js/sql.js) (MIT),
+Bundled material retains its own terms where applicable:
+[sql.js](https://github.com/sql-js/sql.js) (MIT),
 [PayloadsAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings)
 (MIT), OWASP ASVS (CC BY-SA 4.0), locally hosted fonts (SIL OFL),
 [CISA KEV](https://github.com/cisagov/kev-data), and
